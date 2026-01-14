@@ -1,0 +1,40 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FW_DIR="$SCRIPT_DIR"
+
+cmd="${1:-}"
+shift || true
+
+case "$cmd" in
+    ls)
+        cat "$FW_DIR/whitelist.txt"
+        ;;
+    update)
+		"$FW_DIR/docker-firewall.sh"
+        ;;
+    add)
+        if [ -z "${1:-}" ]; then
+            echo "Usage: fw add [domain]"
+            exit 1
+        fi
+		domain=$(echo "$1" | xargs)
+		grep -qx "$domain" "$FW_DIR/whitelist.txt" || echo "$domain" >> "$FW_DIR/whitelist.txt"
+		"$FW_DIR/docker-firewall.sh"
+        ;;
+    remove)
+        if [ -z "${1:-}" ]; then
+            echo "Usage: fw remove [domain]"
+            exit 1
+        fi
+		domain=$(echo "$1" | xargs)
+		sed -i "/^$domain$/d" "$FW_DIR/whitelist.txt"
+		"$FW_DIR/docker-firewall.sh"
+        ;;
+    *)
+        echo "Usage: fw {ls|update|add|remove}"
+        exit 1
+        ;;
+esac
+

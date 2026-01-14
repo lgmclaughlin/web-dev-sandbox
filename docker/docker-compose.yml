@@ -1,0 +1,24 @@
+services:
+  web-dev-sandbox:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        - TZ=America/Los_Angeles
+        - CLAUDE_CODE_VERSION=latest
+    image: web-dev-sandbox
+    container_name: web-dev-sandbox
+    user: "${USER_ID}:${GROUP_ID}"
+    volumes:
+      - ../workspace:/workspace:rw,delegated
+      - claude_history:/commandhistory
+      - claude_config:/home/node/.claude
+    security_opt:
+      - no-new-privileges:true
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  claude_history:
+  claude_config:

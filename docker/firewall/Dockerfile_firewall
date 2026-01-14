@@ -1,0 +1,24 @@
+FROM debian:bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  iptables \
+  ipset \
+  iproute2 \
+  curl \
+  jq \
+  dnsutils \
+  aggregate \
+  ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+COPY docker/firewall/firewall-init.sh /usr/local/bin/firewall-init.sh
+RUN chmod +x /usr/local/bin/firewall-init.sh
+
+COPY docker/firewall/firewall-apply.sh /usr/local/bin/firewall-apply.sh
+RUN chmod +x /usr/local/bin/firewall-apply.sh
+
+RUN mkdir -p /etc/firewall
+
+CMD ["bash"]

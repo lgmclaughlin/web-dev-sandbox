@@ -1,0 +1,16 @@
+services:
+  sandbox-firewall:
+    build:
+      context: ../..
+      dockerfile: docker/firewall/Dockerfile_firewall
+    image: sandbox-firewall:latest
+    container_name: sandbox-firewall
+    network_mode: bridge
+    security_opt:
+      - no-new-privileges:false
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    stdin_open: true
+    tty: true
+    restart: unless-stopped

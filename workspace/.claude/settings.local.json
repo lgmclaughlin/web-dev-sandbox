@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "nvim",
+      "nano",
+      "less",
+      "git",
+      "jq",
+      "fzf"
+    ]
+  }
+}
