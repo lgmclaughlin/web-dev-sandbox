@@ -37,14 +37,17 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   ```
 
   ## Getting Started
-  **Build and start the firewall container**
+  ### Build and start the firewall container
+  
   ```
   ./docker/firewall/docker-setup.sh
   ```
   Runs the sandbox-firewall container. Both firewall-init.sh and firewall-apply.sh are copied into the container and run inside.
-	- Applies network restrictions for all future containers on the Docker bridge network.
+  
+  Applies network restrictions for all future containers on the Docker bridge network.
 
-  **Modify the firewall whitelist**
+
+  ### Modify the firewall whitelist
   
   Manage the firewall whitelist with the ./fw script inside `docker/firewall`. It updates the firewall container's ipset using an atomic swap to ensure zero-downtime.
   
@@ -59,7 +62,8 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   ./fw update           Updates the firewall based on the current whitelist.txt.
   ```
 
-  **Mount project files**
+
+  ### Mount project files
   
   Modify the `CONTENT_PATH` variable in `mount.sh` to point to your remote file server.
   
@@ -68,7 +72,8 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   ./mount.sh
   ```
 
-  **Start main container**
+
+  ### Start main container
   
   ```
   ./docker/docker.sh
@@ -78,7 +83,8 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
 	 ./docker/docker.sh --build
 	 ```
 
-  **Attach to the container**
+
+  ### Attach to the container
   
   ```
   docker exec -it web-dev-sandbox bash
