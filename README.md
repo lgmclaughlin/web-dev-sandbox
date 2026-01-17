@@ -32,7 +32,9 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   │   │   └── settings.local.json         # Claude project settings
   │   ├── content
   │   └── .claudeignore                   # Claude ignore
-  ├── mount.sh                            # SSHFS mount script
+  ├── setup/
+  │   ├── mount.sh                        # Verify and remount SSHFS folders if necessary
+  │   └── start.sh                        # Verify mounts, start the main container, and attach to it
   └── README.md                           # This file
   ```
 
