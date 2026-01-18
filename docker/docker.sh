@@ -2,6 +2,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR"/.env
 
 export USER_ID="$(id -u)"
 export GROUP_ID="$(id -g)"
@@ -15,17 +16,17 @@ if [ "$#" -gt 0 ]; then
 	SHOULD_BUILD=true
 fi
 
-if docker ps --format '{{.Names}}' | grep -q '^web-dev-sandbox$'; then
+if [ -n "$(docker compose -p "$COMPOSE_PROJECT_NAME" -f "$SCRIPT_DIR/docker-compose.yml" ps -q sandbox)" ]; then
     echo "Bringing down existing container..."
-    docker compose -f "$SCRIPT_DIR/docker-compose.yml" down
+    docker compose -p "$COMPOSE_PROJECT_NAME" -f "$SCRIPT_DIR/docker-compose.yml" down
 fi
 
 if $SHOULD_BUILD; then
-	echo "Building Docker image for web-dev-sandbox..."
+	echo "Building Docker image for ${COMPOSE_PROJECT_NAME}..."
 	docker compose -f "$SCRIPT_DIR/docker-compose.yml" build
 fi
 
-echo "Starting web-dev-sandbox container..."
-docker compose -f "$SCRIPT_DIR/docker-compose.yml" up -d
+echo "Starting ${COMPOSE_PROJECT_NAME} container..."
+docker compose -p "$COMPOSE_PROJECT_NAME" -f "$SCRIPT_DIR/docker-compose.yml" up -d
 
 echo "Done."

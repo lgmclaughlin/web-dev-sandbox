@@ -1,10 +1,9 @@
 services:
-  sandbox-firewall:
+  firewall:
     build:
       context: ../..
       dockerfile: docker/firewall/Dockerfile_firewall
-    image: sandbox-firewall:latest
-    container_name: sandbox-firewall
+    image: ${COMPOSE_PROJECT_NAME}-firewall:latest
     network_mode: bridge
     security_opt:
       - no-new-privileges:false

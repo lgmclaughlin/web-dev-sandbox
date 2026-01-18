@@ -17,6 +17,7 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   web-dev-sandbox/
   ├── docker/
   │   ├── firewall/
+  │   │   ├── .env                        # Firewall environment for project name
   │   │   ├── docker-compose-firewall.yml # Firewall container
   │   │   ├── docker-firewall.sh          # Starts the firewall container
   │   │   ├── Dockerfile_firewall         # Firewall container image
@@ -24,6 +25,7 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   │   │   ├── firewall-init.sh            # Firewall init helper script
   │   │   ├── fw                          # Whitelist commands (ls, add, remove, update)
   │   │   └── whitelist.txt               # Whitelisted domains
+  │   ├── .env                            # Main environment for project name
   │   ├── docker-compose.yml              # Main container
   │   ├── docker.sh                       # Start the main container
   │   └── Dockerfile                      # Main container image
@@ -39,12 +41,16 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   ```
 
   ## Getting Started
+  ### Set Project Name (Optional)
+
+  Set the project name inside `docker/.env` and `docker/firewall/.env`. Defaults to `my-project`.
+
   ### Build and start the firewall container
   
   ```
-  ./docker/firewall/docker-setup.sh
+  ./docker/firewall/docker-firewall.sh
   ```
-  Runs the sandbox-firewall container. Both firewall-init.sh and firewall-apply.sh are copied into the container and run inside.
+  Runs the firewall container. Both firewall-init.sh and firewall-apply.sh are copied into the container and run inside.
   
   Applies network restrictions for all future containers on the Docker bridge network.
 
@@ -89,9 +95,16 @@ The firewall setup was an adaptation of Anthropic's original version. I split th
   ### Attach to the container
   
   ```
-  docker exec -it web-dev-sandbox bash
+  ./setup/attach.sh
   ```
   Your workspace will be mounted at `/workspace`. Dotfiles (e.g., `.claudeignore`) will be visible.
+
+  ### Remount, Rebuild, and Attach
+
+  ```
+  ./setup/start.sh
+  ```
+  Quick way to reset the sandbox mounts / container and attach all at once.
 
   ## Workspace
   
